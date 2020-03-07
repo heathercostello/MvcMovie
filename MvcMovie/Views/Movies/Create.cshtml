@@ -1,0 +1,67 @@
+@model MvcMovie.Models.MovieCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Movie";
+}
+
+<h1>Create</h1>
+
+<h4>Movie</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReleaseDate" class="control-label"></label>
+                <input asp-for="ReleaseDate" class="form-control" />
+                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+            </div>
+
+            <label asp-for="Genre" class="control-label">Choose a genre:</label><br/>
+            <select asp-for="Genre" id="genre" name="genre">
+                <option value="Documentary">Documentary</option>
+                <option value="Drama">Drama</option>
+                <option value="Historical">Historical</option>
+                <option value="Comedy">Comedy</option>
+            </select>
+
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Photo" class="control-label"></label>
+                <div class="custom-file">
+                    <input asp-for="Photo" class="form-control custom-file-input" />
+                    <span asp-validation-for="Photo" class="text-danger"></span>
+                    <label class="custom-file-label">Choose File...</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            @section Scripts {
+                <script>$(document).ready(function () {
+                        $('.custom-file-input').on("change", function () {
+                            var fileName = $(this).val().split("\\").pop();
+                            $(this).next('.custom-file-label').html(fileName);
+                        })
+                    });</script>
+                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            }
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+

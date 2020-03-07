@@ -1,0 +1,109 @@
+@model MvcMovie.Models.MovieGenreViewModel
+
+@{
+    ViewData["Title"] = "Movies";
+}
+
+@functions {
+    string GetSortIcon(string currentSort, string ascName, string descName)
+    {
+        if (currentSort == ascName)
+        {
+            return "fa fa-sort-asc";
+        }
+        else if (currentSort == descName)
+        {
+            return "fa fa-sort-desc";
+        }
+        else
+        {
+            return "fa fa-sort";
+        }
+    }
+}
+
+<h1>Movies</h1>
+
+<p>
+    <a class="btn btn-warning" asp-action="Create">Create Movie</a>
+</p>
+
+<form class="form-inline" asp-controller="Movies" method="get">
+    <div class="form-group mr-2">
+        <label for="searchTitle">Genre:</label>
+        <select asp-items="Model.Genres" class="form-control form-control-sm ml-1" id="searchGenre" name="searchGenre" asp-for="@ViewData["CurrentGenreFilter"]">
+            <option value="">All</option>
+        </select>
+    </div>
+    <div class="form-group mr-2">
+        <label for="searchTitle">Title:</label>
+        <input type="text" class="form-control form-control-sm ml-1" name="searchTitle" id="searchTitle" value="@ViewData["CurrentTitleFilter"]" />
+    </div>
+    <div class="btn-group btn-group-sm">
+        <button type="submit" class="btn btn-outline-info mr-2">Search</button>
+        <a asp-controller="Movies" class="btn btn-outline-info">Full List</a>
+    </div>
+</form>
+
+
+<table class="table mt-2 table-bordered table-hover table-sm">
+    <thead>
+        <tr>
+   
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortParm"]"
+                   asp-route-currentGenreFilter="@ViewData["CurrentGenreFilter"]"
+                   asp-route-currentTitleFilter="@ViewData["CurrentTitleFilter"]">
+                    @Html.DisplayNameFor(model => model.Movies[0].Title)
+                    <i class="@GetSortIcon((string)ViewData["CurrentSort"], "Title", "title_desc")"></i>
+                </a>
+            </th>
+            <th class="text-center">
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ReleaseDateSortParm"]"
+                   asp-route-currentGenreFilter="@ViewData["CurrentGenreFilter"]"
+                   asp-route-currentTitleFilter="@ViewData["CurrentTitleFilter"]">
+                    @Html.DisplayNameFor(model => model.Movies[0].ReleaseDate)
+                    <i class="@GetSortIcon((string)ViewData["CurrentSort"], "ReleaseDate", "releasedate_desc")"></i>
+                </a>
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.Movies[0].Genre)
+            </th>
+            <th class="text-right">
+
+                    @Html.DisplayNameFor(model => model.Movies[0].Price)
+            </th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Movies)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </a>
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.ReleaseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Genre)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td class="text-center">
+                    <div class="btn-group-sm">
+                        <a class="badge badge-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="badge badge-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a class="badge badge-warning" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
